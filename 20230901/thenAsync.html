@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    //아래 코드에서 .then/catch 대신 async/await으로 다시 작성해보아요
+    function loadJson(url){
+      return fetch(url)
+      .then(response => {
+        if(response.status == 200){
+          return response.json();
+        }else{
+          throw new Error(response.status);
+        }
+      })
+    }
+    loadJson('no-such-user.json').catch(alert);
+
+
+    //
+    async function loadJson(url){
+      let response = await fetch(url);
+
+      if(response.status == 200){
+        let json = await response.json();
+        return json;
+      }
+      throw new Error(response.status);
+    }
+    loadJson('no-such-user.json').catch(alert);
+
+
+    //1. loadJson은 async 함수가 됩니다.
+    //2. 함수 안의 .then을 전부 await로 바꿉니다.
+    //3. loadJson에서 던져진 에러는 .catch에서 처리됩니다. loadJson을 호출하는 코드는 async 함수 내부가 아니기 때문에 await loadJson(...)을 사용할 수 없습니다.
+  </script>
+</body>
+</html>

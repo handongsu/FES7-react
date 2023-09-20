@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <script>
+    function successCallback(result){
+      console.log('구독 성공: ' + result);
+    }
+    function failureCallback(error){
+      console.log("구독 실패: " + error);
+    }
+
+    subscriptionYoutubeChannelAsync(subscription, successCallback, failureCallback);
+    //일반적으로 사용하는 비동기 처리 방식의 예제 코드입니다. 코드의 내용은 유튜브의 구독 기능을 예시로 성공, 실패 처리를 정의하고 해당 식을 실행되는 함수에 인자로 전달해 실행 시점을 실행되는 함수에게 위임했습니다.
+    // 즉 콜백 함수를 정의하고 비동기로 실행되는 함수가 콜백 함수를 실행하는 형태가 되었습니다.
+    
+    //이 코드를 Promise를 통해 정의한다면 아래와 같습니다
+    subscriptionYoutubeChannelAsync(subscription).then(successCallback,failureCallback);
+    //실행과 동시에 함수를 전달하지 않고 then()을 이용해서 콜백 함수를 첨부하는 방식으로 바뀌었습니다.
+
+    //소한 차이라고 생각할 수 있지만 첨부하는 형태로 비동기를 처리할 수 있다는 점은 코드를 간결하고 읽기 쉽게 만들어 줄 뿐만 아니라 Chaning 형태로 비동기를 처리할 수 있도록 해줍니다.
+
+    doSomething1(function(result1) {
+  doSomething2(result1, function(result2) {
+    doSomething3(result2, function(finalResult) {
+      console.log('최종 실행 결과: ' + finalResult);
+    }, failureCallback);
+  }, failureCallback);
+}, failureCallback);
+
+//예제 코드에서 3가지의 일들을 이전의 결과를 받아 순서대로 처리해야 하는 상황을 표현했습니다. 이 상황이 4개 이상의 일들을 순차적으로 처리해야 하는 상황이 온다면 보기도 어렵고, 이해하기 힘든 코드가 만들어 집니다 .
+//이럴 때 바로 Promise가 가진 매력을 엿볼 수 있습니다.
+
+doSomething1().then(function(reulst1) {
+  return doSomething2(result1);
+})
+.then(function(result2) {
+  return doSomething3(result2);
+})
+.then(function(finalResult) {
+  console.log('최종 실행 결과: ' + finalResult);
+})
+.catch(failureCallback);
+
+//Promise 사용한다면, then()을 이용해 기존의 중첩되는 구조를 피할 수 있습니다.
+//예외를 처리하는 방법에 있어서도 Promise는 좋은 코드를 만들 수 있게 해줍니다.
+//일반적인 비동기 처리 방식에서는 예외 상황을 위해 failureCallback을 3번 사용하고 있지만, Promise 처리 방식에서는 1번만 사용하고 있습니다.
+  </script>
+</body>
+</html>

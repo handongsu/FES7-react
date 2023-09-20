@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <p>some text</p>
+    <button>통신 시작!</button>
+
+    <script>
+        // const btn = document.querySelector('button');
+        // const txt = document.querySelector('p');
+        // btn.addEventListener('click', xhrRequest);
+
+        let result;
+
+        function xhrRequest() {
+            const xhrObj = new XMLHttpRequest();
+            xhrObj.open('GET', 'message.txt');
+
+            xhrObj.onreadystatechange = () => {
+                if (xhrObj.readyState === 4 && xhrObj.status === 200) {
+                    result = xhrObj.responseText;
+                    // txt.textContent = result;
+                    //데이터 문자열로 가져올 수 있다. 그런 다음 문자열을 파싱하여 필요한 데이터를 추출하거나 사용 가능
+                    //const parseData = JSON.parse(responseText);
+                    //JSON 파싱 - JSON 형식의 문자열을 js 객체로 변환하는 작업을 의미
+                    //JSON 파싱은 주로 웹 애플리케이션에서 서버로부터 받은 데이터를 JS에서 사용 가능한 형식으로 변환하는 데 사용.
+
+                    console.log(result);
+                }
+            };
+
+            xhrObj.send();
+        };
+
+        xhrRequest();
+
+        console.log(result);
+
+
+        //readyState는 XMLHttpRequest 객체의 현재 상태를 나타내는 값입니다. 4인 경우 XMLHttprequest 객체가 요청을 완료한 상태를 나타냅니다. (서버와의 통신이 완료)
+
+        //status는 HTTP 응답 상태 코드
+        // 200인 경우 HTTP 요청이 성공적으로 처리되었음을 나타냅니다.
+
+        //따라서 xhrObj.readyState === 4는 요청이 완료되었음을 확인하고, xhrObj.status === 200은 요청이 성공적으로 처리되었음을 확인합니다. 두 가지 조건을 모두 확인하는 것은 요청이 완료되었고 서버가 성공 응답을 반환했을 때에만 특정 코드를 실행하고자 할 때 사용됩니다.
+
+        //만약 두 조건 중 하나만 쓴다면, 요청은 완료되었지만 서버가 실패를 응답했을 때도 실행될 수 있다.
+    </script>
+</body>
+
+</html>
